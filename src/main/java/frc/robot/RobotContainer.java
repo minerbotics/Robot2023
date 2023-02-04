@@ -4,13 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,6 +28,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
 
   private final XboxController m_primaryController = new XboxController(0);
+  private final Limelight m_Limelight = new Limelight();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -40,6 +46,24 @@ public class RobotContainer {
             () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+        //tx horz offset from crosshair to target, -27 to 27 degs
+        NetworkTableEntry tx = table.getEntry("tx");
+        //ty vert offset -20.5 to 20.5 degs
+        NetworkTableEntry ty = table.getEntry("ty");
+        //ta target area 0-100%
+        NetworkTableEntry ta = table.getEntry("ta");
+
+        //read values periodically
+        double x = tx.getDouble(0.0);
+        double y = ty.getDouble(0.0);
+        double area = ta.getDouble(0.0);
+
+        //post to smart dashboard periodically
+        SmartDashboard.putNumber("LimelightX", x);
+        SmartDashboard.putNumber("LimelightY", y);
+        SmartDashboard.putNumber("LimelightArea", area);
+    
     // Configure the button bindings
     configureButtonBindings();
   }

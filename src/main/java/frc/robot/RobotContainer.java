@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,16 +22,22 @@ import frc.robot.subsystems.Limelight;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem;
+  private final XboxController m_primaryController;
+  private final XboxController m_secondaryController;
+  private final Limelight m_Limelight;
 
-  private final XboxController m_primaryController = new XboxController(0);
-  private final Limelight m_Limelight = new Limelight();
+  private boolean m_limelightHasValidTarget;;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Set up the default command for the drivetrain.
+    m_drivetrainSubsystem = new DrivetrainSubsystem();
+    m_primaryController = new XboxController(0);
+    m_secondaryController = new XboxController(0);
+    m_Limelight = new Limelight();
+
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
@@ -46,23 +49,16 @@ public class RobotContainer {
             () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-        //tx horz offset from crosshair to target, -27 to 27 degs
-        NetworkTableEntry tx = table.getEntry("tx");
-        //ty vert offset -20.5 to 20.5 degs
-        NetworkTableEntry ty = table.getEntry("ty");
-        //ta target area 0-100%
-        NetworkTableEntry ta = table.getEntry("ta");
+    double tx = m_Limelight.getTX();
+    double ty = m_Limelight.getTY();
+    double ta = m_Limelight.getTA();
+    m_limelightHasValidTarget = (m_Limelight.getTV() < 1.0) ? false : true;
 
-        //read values periodically
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
-
-        //post to smart dashboard periodically
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
+    //post to smart dashboard periodically
+    SmartDashboard.putNumber("LimelightX", tx);
+    SmartDashboard.putNumber("LimelightY", ty);
+    SmartDashboard.putNumber("LimelightArea", ta);
+    SmartDashboard.putBoolean("LimelightTarget", m_limelightHasValidTarget);
     
     // Configure the button bindings
     configureButtonBindings();
@@ -75,10 +71,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Back button zeros the gyroscope
-    new Button(m_primaryController::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    
   }
 
   /**

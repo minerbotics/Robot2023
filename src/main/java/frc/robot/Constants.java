@@ -47,4 +47,14 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 10;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(168.22265518159);
+
+    public final static class IOConstants {
+        public final static int kControllerPort = 0;
+        public final static int kAButton = 1;
+        public final static int kBButton = 2;
+        public final static int kRBButton = 6;
+        public final static int kLBButton = 5;
+        public final static int kYButton = 4;
+        public final static int kXButton = 3;
+    }
 }

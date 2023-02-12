@@ -4,13 +4,18 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignWithTarget;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Limelight;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -20,15 +25,26 @@ import frc.robot.subsystems.DrivetrainSubsystem;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem;
+  private final CommandXboxController m_primaryController;
+  private final CommandXboxController m_secondaryController;
+  private final Limelight m_Limelight;  
+  private final AlignWithTarget m_align;
+  private final StopCommand m_stop;
 
-  private final XboxController m_primaryController = new XboxController(0);
+  private Trigger yButton;
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Set up the default command for the drivetrain.
+    m_drivetrainSubsystem = new DrivetrainSubsystem();
+    m_primaryController = new CommandXboxController(0);
+    m_secondaryController = new CommandXboxController(0);
+    m_Limelight = new Limelight();
+    yButton = m_primaryController.y();
+
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
@@ -40,6 +56,9 @@ public class RobotContainer {
             () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
+    m_align = new AlignWithTarget(m_drivetrainSubsystem, m_Limelight);
+    m_stop = new StopCommand(m_drivetrainSubsystem);
+    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -51,10 +70,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Back button zeros the gyroscope
-    new Button(m_primaryController::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    yButton.whileTrue(m_align);
+    yButton.onFalse(m_stop);
   }
 
   /**

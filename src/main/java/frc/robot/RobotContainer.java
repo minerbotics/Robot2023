@@ -13,9 +13,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignWithTarget;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.GrabGamePiece;
+import frc.robot.commands.LowerLifter;
+import frc.robot.commands.RaiseLifter;
+import frc.robot.commands.ReleaseGamePiece;
 import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Slider;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,26 +31,46 @@ import frc.robot.subsystems.Limelight;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // Subsystems
   private final DrivetrainSubsystem m_drivetrainSubsystem;
+  private final Limelight m_Limelight;
+  private final Lifter m_lifter;
+  private final Grabber m_grabber;
+  private final Slider m_slider;
+
+  // Controllers
   private final CommandXboxController m_primaryController;
   private final CommandXboxController m_secondaryController;
-  private final Limelight m_Limelight;  
-  private final AlignWithTarget m_align;
-  private final StopCommand m_stop;
 
-  private Trigger yButton;
+  // Buttons
+  private Trigger yButtonPrimary;
+  private Trigger xButtonSecondary;
+  private Trigger yButtonSecondary;
+  private Trigger aButtonSecondary;
+  private Trigger bButtonSecondary;
 
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    // Subsystems
     m_drivetrainSubsystem = new DrivetrainSubsystem();
-    m_primaryController = new CommandXboxController(0);
-    m_secondaryController = new CommandXboxController(0);
     m_Limelight = new Limelight();
-    yButton = m_primaryController.y();
+    m_lifter = new Lifter();
+    m_grabber = new Grabber();
+    m_slider = new Slider();
+
+    // Controllers
+    m_primaryController = new CommandXboxController(0);
+    m_secondaryController = new CommandXboxController(1);
+
+    //Buttons
+    yButtonPrimary = m_primaryController.y();
+    xButtonSecondary = m_secondaryController.x();
+    yButtonSecondary = m_secondaryController.y();
+    aButtonSecondary = m_secondaryController.a();
+    bButtonSecondary = m_secondaryController.b();
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -55,9 +82,6 @@ public class RobotContainer {
             () -> -modifyAxis(m_primaryController.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
-
-    m_align = new AlignWithTarget(m_drivetrainSubsystem, m_Limelight);
-    m_stop = new StopCommand(m_drivetrainSubsystem);
     
     // Configure the button bindings
     configureButtonBindings();
@@ -70,8 +94,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    yButton.whileTrue(m_align);
-    yButton.onFalse(m_stop);
+    // Primary Driver
+    yButtonPrimary.whileTrue(new AlignWithTarget(m_drivetrainSubsystem, m_Limelight));
+    yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
+
+    // Secondary Driver
+    yButtonSecondary.onTrue(new RaiseLifter(m_lifter));
+    aButtonSecondary.onTrue(new LowerLifter(m_lifter));
+    xButtonSecondary.onTrue(new GrabGamePiece(m_grabber, m_slider));
+    bButtonSecondary.onTrue(new ReleaseGamePiece(m_grabber));
   }
 
   /**

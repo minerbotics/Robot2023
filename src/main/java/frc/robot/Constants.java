@@ -60,4 +60,20 @@ public final class Constants {
         public static final int FORWARD_CHANNEL = 4;
         public static final int REVERSE_CHANNEL = 5;
     }
+    public final static class ArmConstants {
+        public static final int RIGHT_ARM_MOTOR = 13;
+        public static final int LEFT_ARM_MOTOR = 14;
+        public static final double PID_P = 0.1;
+        public static final double PID_I = 1e-4;
+        public static final double PID_D = 1;
+        public static final double PID_Iz = 0;
+        public static final double PID_FF = 0;
+        public static final double PID_MAX_OUTPUT_RANGE = 1;
+        public static final double PID_MIN_OUTPUT_RANGE = -1;
+        public static final double TOP_GOAL_SETPOINT = 0;
+        public static final double MIDDLE_GOAL_SETPOINT = 0;
+        public static final double BOTTOM_GOAL_SETPOINT = 0;
+        public static final double HOME_SETPOINT = 0;
+        public static final double PICKUP_FROM_FLOOR_SETPOINT = 0;
+    }
 }

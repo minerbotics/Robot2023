@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
@@ -46,6 +47,7 @@ public class RobotContainer {
 
   // Buttons
   private Trigger yButtonPrimary;
+  private Trigger backButtonPrimary;
   private Trigger xButtonSecondary;
   private Trigger yButtonSecondary;
   private Trigger aButtonSecondary;
@@ -71,6 +73,7 @@ public class RobotContainer {
 
     //Buttons
     yButtonPrimary = m_primaryController.y();
+    backButtonPrimary = m_primaryController.back();
     xButtonSecondary = m_secondaryController.x();
     yButtonSecondary = m_secondaryController.y();
     aButtonSecondary = m_secondaryController.a();
@@ -101,9 +104,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Primary Driver
-    yButtonPrimary.whileTrue(
-      new AlignCenter(m_drivetrainSubsystem, m_Limelight));
+    yButtonPrimary.whileTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight));
     yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
+    backButtonPrimary.onTrue(new RunCommand(m_drivetrainSubsystem::zeroGyroscope));
 
     // Secondary Driver
     yButtonSecondary.onTrue(new RaiseLifter(m_lifter));

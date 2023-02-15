@@ -11,12 +11,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AlignWithTarget;
+import frc.robot.commands.AlignCenter;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.GrabGamePiece;
 import frc.robot.commands.LowerLifter;
 import frc.robot.commands.RaiseLifter;
 import frc.robot.commands.ReleaseGamePiece;
+import frc.robot.commands.SlideIn;
+import frc.robot.commands.SlideOut;
 import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
@@ -48,6 +50,8 @@ public class RobotContainer {
   private Trigger yButtonSecondary;
   private Trigger aButtonSecondary;
   private Trigger bButtonSecondary;
+  private Trigger lbButtonSecondary;
+  private Trigger rbButtonSecondary;
 
 
   /**
@@ -71,6 +75,8 @@ public class RobotContainer {
     yButtonSecondary = m_secondaryController.y();
     aButtonSecondary = m_secondaryController.a();
     bButtonSecondary = m_secondaryController.b();
+    lbButtonSecondary = m_secondaryController.leftBumper();
+    rbButtonSecondary = m_secondaryController.rightBumper();
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -95,14 +101,17 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Primary Driver
-    yButtonPrimary.whileTrue(new AlignWithTarget(m_drivetrainSubsystem, m_Limelight));
+    yButtonPrimary.whileTrue(
+      new AlignCenter(m_drivetrainSubsystem, m_Limelight));
     yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
 
     // Secondary Driver
     yButtonSecondary.onTrue(new RaiseLifter(m_lifter));
     aButtonSecondary.onTrue(new LowerLifter(m_lifter));
-    xButtonSecondary.onTrue(new GrabGamePiece(m_grabber, m_slider));
+    xButtonSecondary.onTrue(new GrabGamePiece(m_grabber));
     bButtonSecondary.onTrue(new ReleaseGamePiece(m_grabber));
+    lbButtonSecondary.onTrue(new SlideIn(m_slider));
+    rbButtonSecondary.onTrue(new SlideOut(m_slider));
   }
 
   /**

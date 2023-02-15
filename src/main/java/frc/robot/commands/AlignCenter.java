@@ -5,12 +5,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Limelight;
 
-public class AlignWithTarget extends CommandBase {
+public class AlignCenter extends CommandBase {
 
     private final DrivetrainSubsystem m_driveTrain;
     private final Limelight m_Limelight;
 
-    public AlignWithTarget(DrivetrainSubsystem driveTrain, Limelight limelight) {
+    public AlignCenter(DrivetrainSubsystem driveTrain, Limelight limelight) {
         m_driveTrain = driveTrain;
         m_Limelight = limelight;
         addRequirements(m_driveTrain, m_Limelight);
@@ -24,12 +24,24 @@ public class AlignWithTarget extends CommandBase {
         double tx = m_Limelight.getTX();
         if (tx < -2) {
             //strafe right
-            m_driveTrain.drive(new ChassisSpeeds(0.0, 0.1, 0.0));
+            m_driveTrain.drive(
+                new ChassisSpeeds(
+                    0.0,
+                    0.1,
+                    0.0));
         } else if (tx > 2) {
             //strafe left
-            m_driveTrain.drive(new ChassisSpeeds(0.0, -0.1, 0.0));
+            m_driveTrain.drive(
+                new ChassisSpeeds(
+                    0.0,
+                    -0.1,
+                    0.0));
         } else {
-            m_driveTrain.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+            m_driveTrain.drive(
+                new ChassisSpeeds(
+                    0.0,
+                    0.0,
+                    0.0));
         }
     }
 

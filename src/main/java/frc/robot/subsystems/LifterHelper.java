@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LifterConstants;
 
-public class Lifter extends SubsystemBase {
+public class LifterHelper extends SubsystemBase {
 
     private final DoubleSolenoid m_lifterSolenoid;
 
-    public Lifter() {
+    public LifterHelper() {
         m_lifterSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM, 
             LifterConstants.FORWARD_CHANNEL, 

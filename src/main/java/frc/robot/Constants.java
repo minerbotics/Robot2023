@@ -70,10 +70,12 @@ public final class Constants {
         public static final double PID_FF = 0;
         public static final double PID_MAX_OUTPUT_RANGE = 1;
         public static final double PID_MIN_OUTPUT_RANGE = -1;
-        public static final double TOP_GOAL_SETPOINT = 0;
-        public static final double MIDDLE_GOAL_SETPOINT = 0;
-        public static final double BOTTOM_GOAL_SETPOINT = 0;
+        // Positions
+        public static final double TOP_CONE_GOAL_SETPOINT = 0;
+        public static final double TOP_CUBE_GOAL_SETPOINT = 0;
+        public static final double MIDDLE_CONE_GOAL_SETPOINT = 0;
+        public static final double MIDDLE_CUBE_GOAL_SETPOINT = 0;
         public static final double HOME_SETPOINT = 0;
-        public static final double PICKUP_FROM_FLOOR_SETPOINT = 0;
+        public static final double FLOOR_SETPOINT = 0;
     }
 }

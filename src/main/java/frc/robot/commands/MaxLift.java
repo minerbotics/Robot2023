@@ -2,19 +2,23 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.LifterHelper;
 
-public class RaiseLifter extends CommandBase {
+public class MaxLift extends CommandBase {
 
     private final Lifter m_lifter;
+    private final LifterHelper m_lifterHelper;
 
-    public RaiseLifter(Lifter lifter) {
+    public MaxLift(Lifter lifter, LifterHelper lifterHelper) {
         m_lifter = lifter;
-        addRequirements(m_lifter);
+        m_lifterHelper = lifterHelper;
+        addRequirements(m_lifter, m_lifterHelper);
     }
 
     @Override
     public void initialize() {
         m_lifter.raise();
+        m_lifterHelper.raise();
     }
 
     @Override

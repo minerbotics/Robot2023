@@ -14,16 +14,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.GrabGamePiece;
-import frc.robot.commands.LowerLifter;
-import frc.robot.commands.RaiseLifter;
+import frc.robot.commands.ToggleGrabber;
+import frc.robot.commands.MinLift;
+import frc.robot.commands.MaxLift;
 import frc.robot.commands.ReleaseGamePiece;
-import frc.robot.commands.SlideIn;
-import frc.robot.commands.SlideOut;
+import frc.robot.commands.ToggleSlide;
 import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.LifterHelper;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Slider;
 
@@ -38,6 +38,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Limelight m_Limelight;
   private final Lifter m_lifter;
+  private final LifterHelper m_lifterHelper;
   private final Grabber m_grabber;
   private final Slider m_slider;
 
@@ -64,6 +65,7 @@ public class RobotContainer {
     m_drivetrainSubsystem = new DrivetrainSubsystem();
     m_Limelight = new Limelight();
     m_lifter = new Lifter();
+    m_lifterHelper = new LifterHelper();
     m_grabber = new Grabber();
     m_slider = new Slider();
 
@@ -109,12 +111,10 @@ public class RobotContainer {
     backButtonPrimary.onTrue(new RunCommand(m_drivetrainSubsystem::zeroGyroscope));
 
     // Secondary Driver
-    yButtonSecondary.onTrue(new RaiseLifter(m_lifter));
-    aButtonSecondary.onTrue(new LowerLifter(m_lifter));
-    xButtonSecondary.onTrue(new GrabGamePiece(m_grabber));
-    bButtonSecondary.onTrue(new ReleaseGamePiece(m_grabber));
-    lbButtonSecondary.onTrue(new SlideIn(m_slider));
-    rbButtonSecondary.onTrue(new SlideOut(m_slider));
+    yButtonSecondary.onTrue(new MaxLift(m_lifter, m_lifterHelper));
+    aButtonSecondary.onTrue(new MinLift(m_lifter, m_lifterHelper));
+    lbButtonSecondary.onTrue(new ToggleSlide(m_slider));
+    rbButtonSecondary.onTrue(new ToggleGrabber(m_grabber));
   }
 
   /**

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,7 @@ public class Arm extends SubsystemBase {
     private final CANSparkMax m_rightArmMotor;
     private final CANSparkMax m_leftArmMotor;
     private final SparkMaxPIDController m_pidController;
+    private final RelativeEncoder m_encoder;
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
@@ -27,6 +29,8 @@ public class Arm extends SubsystemBase {
         // Get the PID controller for the pivot motor
         m_pidController = m_rightArmMotor.getPIDController();
 
+        m_encoder = m_rightArmMotor.getEncoder();
+
         // set PID coefficients
         m_pidController.setP(ArmConstants.PID_P);
         m_pidController.setI(ArmConstants.PID_I);
@@ -40,6 +44,10 @@ public class Arm extends SubsystemBase {
 
     public void setPivotSetpoint(double setpoint) {
         m_pidController.setReference(setpoint, ControlType.kPosition);
+    }
+
+    public double getPosition() {
+        return m_encoder.getPosition();
     }
 
     public void setPivotSpeed(double speed) {

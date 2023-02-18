@@ -18,13 +18,13 @@ public final class Constants {
      *
      * Should be measured from center to center.
      */
-    public static final double DRIVETRAIN_TRACKWIDTH_METERS = .593725; 
+    public static final double DRIVETRAIN_TRACKWIDTH_METERS = .4572; 
     /**
      * The front-to-back distance between the drivetrain wheels.
      *
      * Should be measured from center to center.
      */
-    public static final double DRIVETRAIN_WHEELBASE_METERS = .441325; 
+    public static final double DRIVETRAIN_WHEELBASE_METERS = .600075; 
 
     public static final int DRIVETRAIN_PIGEON_ID = 0; // FIXME Set Pigeon ID
 

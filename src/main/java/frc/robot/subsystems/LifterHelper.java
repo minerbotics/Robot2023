@@ -5,32 +5,33 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LifterConstants;
+import frc.robot.Constants.LifterHelperConstants;
 
 public class LifterHelper extends SubsystemBase {
 
-    private final DoubleSolenoid m_lifterSolenoid;
+    private final DoubleSolenoid m_lifterHelperSolenoid;
 
     public LifterHelper() {
-        m_lifterSolenoid = new DoubleSolenoid(
+        m_lifterHelperSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM, 
-            LifterConstants.FORWARD_CHANNEL, 
-            LifterConstants.REVERSE_CHANNEL
+            LifterHelperConstants.FORWARD_CHANNEL, 
+            LifterHelperConstants.REVERSE_CHANNEL
         );
     }
 
     public void raise() {
-        m_lifterSolenoid.set(Value.kReverse);
+        m_lifterHelperSolenoid.set(Value.kReverse);
     }
 
     public void lower() {
-        m_lifterSolenoid.set(Value.kForward);
+        m_lifterHelperSolenoid.set(Value.kForward);
     }
 
     public void toggleLifter() {
-        m_lifterSolenoid.toggle();
+        m_lifterHelperSolenoid.toggle();
     }
 
     public boolean isRaised() {
-        return m_lifterSolenoid.get() == Value.kReverse;
+        return m_lifterHelperSolenoid.get() == Value.kReverse;
     }
 }

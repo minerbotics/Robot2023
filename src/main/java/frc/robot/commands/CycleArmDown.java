@@ -5,6 +5,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.LifterHelper;
+import frc.robot.subsystems.Arm.ArmState;
 
 public class CycleArmDown extends CommandBase {
     private final Arm m_arm;
@@ -25,22 +26,27 @@ public class CycleArmDown extends CommandBase {
 
     @Override
     public void execute() {
-        double position = m_arm.getPosition();
-        if (position == ArmConstants.HOME_SETPOINT) {
+        ArmState currentArmState = m_arm.getCurrentArmState();
+        if (currentArmState == ArmState.HOME) {
             return;
-        } else if (position == ArmConstants.FLOOR_SETPOINT) {
+        } else if (currentArmState == ArmState.FLOOR) {
             if (!m_lifter.isRaised() || !m_lifterHelper.isRaised()) {
                 return;
             }
             m_arm.setPivotSetpoint(ArmConstants.HOME_SETPOINT);
-        } else if (position == ArmConstants.MIDDLE_CUBE_GOAL_SETPOINT) {
+            m_arm.setArmState(ArmState.HOME);
+        } else if (currentArmState == ArmState.MID_CUBE) {
             m_arm.setPivotSetpoint(ArmConstants.FLOOR_SETPOINT);
-        } else if (position == ArmConstants.MIDDLE_CONE_GOAL_SETPOINT) {
+            m_arm.setArmState(ArmState.FLOOR);
+        } else if (currentArmState == ArmState.MID_CONE) {
             m_arm.setPivotSetpoint(ArmConstants.MIDDLE_CUBE_GOAL_SETPOINT);
-        } else if (position == ArmConstants.TOP_CUBE_GOAL_SETPOINT) {
+            m_arm.setArmState(ArmState.MID_CUBE);
+        } else if (currentArmState == ArmState.TOP_CUBE) {
             m_arm.setPivotSetpoint(ArmConstants.MIDDLE_CONE_GOAL_SETPOINT);
-        } else if (position == ArmConstants.TOP_CONE_GOAL_SETPOINT) {
+            m_arm.setArmState(ArmState.MID_CONE);
+        } else if (currentArmState == ArmState.TOP_CONE) {
             m_arm.setPivotSetpoint(ArmConstants.TOP_CUBE_GOAL_SETPOINT);
+            m_arm.setArmState(ArmState.TOP_CUBE);
         } else {
             return;
         }

@@ -17,6 +17,17 @@ public class Arm extends SubsystemBase {
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
+    public enum ArmState {
+        TOP_CONE,
+        TOP_CUBE,
+        MID_CONE,
+        MID_CUBE,
+        FLOOR,
+        HOME;
+    }
+
+    private ArmState m_currentArmState;
+
     public Arm() {
         m_rightArmMotor = new CANSparkMax(
             ArmConstants.RIGHT_ARM_MOTOR, 
@@ -60,5 +71,13 @@ public class Arm extends SubsystemBase {
 
     public void setStop() {
         m_rightArmMotor.set(0);
+    }
+
+    public ArmState getCurrentArmState() {
+        return m_currentArmState;
+    }
+
+    public void setArmState(ArmState armState) {
+        m_currentArmState = armState;
     }
 }

@@ -15,11 +15,17 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
 public class DrivetrainSubsystem extends SubsystemBase {
+  ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+
   /**
    * The maximum voltage that will be delivered to the drive motors.
    * <p>
@@ -80,6 +86,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     swerveConfig.setDriveCurrentLimit(driveLimit);
 
     m_frontLeftModule = Mk4SwerveModuleHelper.createNeo(
+            tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+              .withSize(2, 4)
+              .withPosition(0, 0),
             swerveConfig,
             Mk4SwerveModuleHelper.GearRatio.L2,
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
@@ -89,6 +98,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
 
     m_frontRightModule = Mk4SwerveModuleHelper.createNeo(
+            tab.getLayout("Front Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(2, 0),
             swerveConfig,
             Mk4SwerveModuleHelper.GearRatio.L2,
             FRONT_RIGHT_MODULE_DRIVE_MOTOR,
@@ -98,6 +110,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
 
     m_backLeftModule = Mk4SwerveModuleHelper.createNeo(
+            tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(4, 0),
             swerveConfig,
             Mk4SwerveModuleHelper.GearRatio.L2,
             BACK_LEFT_MODULE_DRIVE_MOTOR,
@@ -107,6 +122,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
 
     m_backRightModule = Mk4SwerveModuleHelper.createNeo(
+            tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                    .withSize(2, 4)
+                    .withPosition(6, 0),
             swerveConfig,
             Mk4SwerveModuleHelper.GearRatio.L2,
             BACK_RIGHT_MODULE_DRIVE_MOTOR,

@@ -27,6 +27,15 @@ public class Grabber extends SubsystemBase {
     }
 
     public void toggleGrabber() {
-        m_grabberSolenoid.toggle();
+        if (this.isGrabbing()) {
+            System.out.println(this.isGrabbing() + " - " + m_grabberSolenoid.get());
+            this.release();
+        } else {
+            this.grab();
+        }
+    }
+
+    public boolean isGrabbing() {
+        return m_grabberSolenoid.get() == Value.kForward;
     }
 }

@@ -31,41 +31,41 @@ public final class Constants {
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 7; 
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 8; 
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11;
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(42.01172177337222);
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(42.1875 + 90);
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1; 
     public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 2; 
     public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(282.39258663028977); 
+    public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(282.39 + 90); 
 
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(322.20704337785804);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(322.2 + 90);
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 3;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 10;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(168.22265518159);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(164.09 + 90);
 
     public static final int PCM_ID = 0;
 
     public final static class GrabberConstants {
-        public static final int FORWARD_CHANNEL = 0;
+        public static final int FORWARD_CHANNEL = 2;
         public static final int REVERSE_CHANNEL = 1;
     }
     public final static class SliderConstants {
-        public static final int FORWARD_CHANNEL = 2;
+        public static final int FORWARD_CHANNEL = 0;
         public static final int REVERSE_CHANNEL = 3;
     }
     public final static class LifterConstants {
-        public static final int FORWARD_CHANNEL = 4;
-        public static final int REVERSE_CHANNEL = 5;
+        public static final int FORWARD_CHANNEL = 5;
+        public static final int REVERSE_CHANNEL = 4;
     }
 
     public final static class LifterHelperConstants {
-        public static final int FORWARD_CHANNEL = 6;
-        public static final int REVERSE_CHANNEL = 7;
+        public static final int FORWARD_CHANNEL = 7;
+        public static final int REVERSE_CHANNEL = 6;
     }
     public final static class ArmConstants {
         public static final int RIGHT_ARM_MOTOR = 13;

@@ -13,12 +13,16 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
+import frc.robot.commands.CycleArmDown;
+import frc.robot.commands.CycleArmUp;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ToggleGrabber;
 import frc.robot.commands.MinLift;
 import frc.robot.commands.MaxLift;
+import frc.robot.commands.MidLift;
 import frc.robot.commands.ToggleSlide;
 import frc.robot.commands.StopCommand;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Lifter;
@@ -40,6 +44,7 @@ public class RobotContainer {
   private final LifterHelper m_lifterHelper;
   private final Grabber m_grabber;
   private final Slider m_slider;
+  private final Arm m_arm;
 
   // Controllers
   private final CommandXboxController m_primaryController;
@@ -51,7 +56,8 @@ public class RobotContainer {
   private Trigger xButtonSecondary;
   private Trigger yButtonSecondary;
   private Trigger aButtonSecondary;
-  private Trigger bButtonSecondary;
+  private Trigger backButtonSecondary;
+  private Trigger startButtonSecondary;
   private Trigger lbButtonSecondary;
   private Trigger rbButtonSecondary;
 
@@ -67,6 +73,7 @@ public class RobotContainer {
     m_lifterHelper = new LifterHelper();
     m_grabber = new Grabber();
     m_slider = new Slider();
+    m_arm = new Arm();
 
     // Controllers
     m_primaryController = new CommandXboxController(0);
@@ -78,7 +85,8 @@ public class RobotContainer {
     xButtonSecondary = m_secondaryController.x();
     yButtonSecondary = m_secondaryController.y();
     aButtonSecondary = m_secondaryController.a();
-    bButtonSecondary = m_secondaryController.b();
+    backButtonSecondary = m_secondaryController.back();
+    startButtonSecondary = m_secondaryController.start();
     lbButtonSecondary = m_secondaryController.leftBumper();
     rbButtonSecondary = m_secondaryController.rightBumper();
 
@@ -111,7 +119,10 @@ public class RobotContainer {
 
     // Secondary Driver
     yButtonSecondary.onTrue(new MaxLift(m_lifter, m_lifterHelper));
+    xButtonSecondary.onTrue(new MidLift(m_lifter, m_lifterHelper));
     aButtonSecondary.onTrue(new MinLift(m_lifter, m_lifterHelper));
+    backButtonSecondary.onTrue(new CycleArmDown(m_arm, m_lifter, m_lifterHelper));
+//    startButtonSecondary.onTrue(new CycleArmUp(m_arm, m_lifter, m_lifterHelper));
     lbButtonSecondary.onTrue(new ToggleSlide(m_slider));
     rbButtonSecondary.onTrue(new ToggleGrabber(m_grabber));
   }

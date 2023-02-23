@@ -19,7 +19,6 @@ public class Slider extends SubsystemBase {
     }
 
     public void slideIn() {
-        System.out.println("slide in");
         m_sliderSolenoid.set(Value.kReverse);
     }
 
@@ -29,7 +28,6 @@ public class Slider extends SubsystemBase {
 
     public void toggleSlider() {
         if (this.isOut()) {
-            System.out.println(this.isOut() + " - " + m_sliderSolenoid.get());
             this.slideIn();
         } else {
             this.slideOut();

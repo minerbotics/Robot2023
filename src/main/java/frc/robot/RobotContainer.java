@@ -96,7 +96,7 @@ public class RobotContainer {
     //Commands
     m_raiseArm = new ManualArmMove(m_arm, m_secondaryController);
 
-   // m_arm.setDefaultCommand(m_raiseArm);
+    m_arm.setDefaultCommand(m_raiseArm);
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement

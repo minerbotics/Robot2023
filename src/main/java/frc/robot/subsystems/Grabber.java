@@ -28,7 +28,6 @@ public class Grabber extends SubsystemBase {
 
     public void toggleGrabber() {
         if (this.isGrabbing()) {
-            System.out.println(this.isGrabbing() + " - " + m_grabberSolenoid.get());
             this.release();
         } else {
             this.grab();

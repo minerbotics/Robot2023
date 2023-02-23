@@ -21,6 +21,6 @@ public class ManualArmMove extends CommandBase {
     }
 
     public void end() {
-     //   m_arm.setStop();
+        m_arm.setStop();
     }
 }

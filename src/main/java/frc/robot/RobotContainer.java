@@ -16,6 +16,7 @@ import frc.robot.commands.AlignCenter;
 import frc.robot.commands.CycleArmDown;
 import frc.robot.commands.CycleArmUp;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.ManualArmMove;
 import frc.robot.commands.ToggleGrabber;
 import frc.robot.commands.MinLift;
 import frc.robot.commands.MaxLift;
@@ -61,6 +62,8 @@ public class RobotContainer {
   private Trigger lbButtonSecondary;
   private Trigger rbButtonSecondary;
 
+  private ManualArmMove m_raiseArm;
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -89,6 +92,11 @@ public class RobotContainer {
     startButtonSecondary = m_secondaryController.start();
     lbButtonSecondary = m_secondaryController.leftBumper();
     rbButtonSecondary = m_secondaryController.rightBumper();
+
+    //Commands
+    m_raiseArm = new ManualArmMove(m_arm, m_secondaryController);
+
+   // m_arm.setDefaultCommand(m_raiseArm);
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement

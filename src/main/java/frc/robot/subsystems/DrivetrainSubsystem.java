@@ -75,7 +75,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final SwerveModule m_backRightModule;
 
   private final int steerLimit = 20;
-  private final int driveLimit = 20;
+  private final int driveLimit = 60;
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 

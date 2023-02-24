@@ -62,7 +62,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setPivotSpeed(double speed) {
-        m_rightArmMotor.set(speed);
+        m_rightArmMotor.set(speed * 0.25);
     }
 
     public void resetPivot() {

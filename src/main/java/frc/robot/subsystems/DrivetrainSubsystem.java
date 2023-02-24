@@ -142,6 +142,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
     m_navx.zeroYaw();
   }
 
+  public double getPitchAngleDegrees() {
+        return m_navx.getPitch();
+  }
+
+  public double getRollAngleDegrees() {
+        return m_navx.getRoll();
+  }
+
   public Rotation2d getGyroscopeRotation() {
 
     if (m_navx.isMagnetometerCalibrated()) {

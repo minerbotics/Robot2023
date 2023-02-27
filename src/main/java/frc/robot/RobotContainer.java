@@ -21,14 +21,12 @@ import frc.robot.commands.ManualArmMove;
 import frc.robot.commands.ToggleGrabber;
 import frc.robot.commands.MinLift;
 import frc.robot.commands.MaxLift;
-import frc.robot.commands.MidLift;
 import frc.robot.commands.ToggleSlide;
 import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Lifter;
-import frc.robot.subsystems.LifterHelper;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Slider;
 
@@ -43,7 +41,6 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Limelight m_Limelight;
   private final Lifter m_lifter;
-  private final LifterHelper m_lifterHelper;
   private final Grabber m_grabber;
   private final Slider m_slider;
   private final Arm m_arm;
@@ -75,7 +72,6 @@ public class RobotContainer {
     m_drivetrainSubsystem = new DrivetrainSubsystem();
     m_Limelight = new Limelight();
     m_lifter = new Lifter();
-    m_lifterHelper = new LifterHelper();
     m_grabber = new Grabber();
     m_slider = new Slider();
     m_arm = new Arm();
@@ -131,10 +127,9 @@ public class RobotContainer {
     backButtonPrimary.onTrue(new RunCommand(m_drivetrainSubsystem::zeroGyroscope));
 
     // Secondary Driver
-    yButtonSecondary.onTrue(new MaxLift(m_lifter, m_lifterHelper));
-    xButtonSecondary.onTrue(new MidLift(m_lifter, m_lifterHelper));
-    aButtonSecondary.onTrue(new MinLift(m_lifter, m_lifterHelper));
-    backButtonSecondary.onTrue(new CycleArmDown(m_arm, m_lifter, m_lifterHelper));
+    yButtonSecondary.onTrue(new MaxLift(m_lifter));
+    aButtonSecondary.onTrue(new MinLift(m_lifter));
+    backButtonSecondary.onTrue(new CycleArmDown(m_arm, m_lifter));
 //    startButtonSecondary.onTrue(new CycleArmUp(m_arm, m_lifter, m_lifterHelper));
     lbButtonSecondary.onTrue(new ToggleSlide(m_slider));
     rbButtonSecondary.onTrue(new ToggleGrabber(m_grabber));

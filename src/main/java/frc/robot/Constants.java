@@ -62,11 +62,6 @@ public final class Constants {
         public static final int FORWARD_CHANNEL = 5;
         public static final int REVERSE_CHANNEL = 4;
     }
-
-    public final static class LifterHelperConstants {
-        public static final int FORWARD_CHANNEL = 7;
-        public static final int REVERSE_CHANNEL = 6;
-    }
     public final static class ArmConstants {
         public static final int RIGHT_ARM_MOTOR = 13;
         public static final int LEFT_ARM_MOTOR = 14;

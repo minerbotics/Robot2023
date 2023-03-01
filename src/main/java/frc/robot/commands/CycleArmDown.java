@@ -4,19 +4,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Lifter;
-import frc.robot.subsystems.LifterHelper;
 import frc.robot.subsystems.Arm.ArmState;
 
 public class CycleArmDown extends CommandBase {
     private final Arm m_arm;
     private final Lifter m_lifter;
-    private final LifterHelper m_lifterHelper;
 
-    public CycleArmDown(Arm arm, Lifter lifter, LifterHelper lifterHelper) {
+    public CycleArmDown(Arm arm, Lifter lifter) {
         m_arm = arm;
         m_lifter = lifter;
-        m_lifterHelper = lifterHelper;
-        addRequirements(m_arm, m_lifter, m_lifterHelper);
+        addRequirements(m_arm, m_lifter);
     }
 
     @Override
@@ -27,12 +24,15 @@ public class CycleArmDown extends CommandBase {
     @Override
     public void execute() {
         ArmState currentArmState = m_arm.getCurrentArmState();
-        if (currentArmState == ArmState.HOME) {
+        if (currentArmState == ArmState.STOW) {
             return;
-        } else if (currentArmState == ArmState.FLOOR) {
-            if (!m_lifter.isRaised() || !m_lifterHelper.isRaised()) {
+        } else if (currentArmState == ArmState.HOME) {
+            if (!m_lifter.isRaised()) {
                 return;
             }
+            m_arm.setPivotSetpoint(ArmConstants.STOW_SETPOINT);
+            m_arm.setArmState(ArmState.STOW);
+        } else if (currentArmState == ArmState.FLOOR) {
             m_arm.setPivotSetpoint(ArmConstants.HOME_SETPOINT);
             m_arm.setArmState(ArmState.HOME);
         } else if (currentArmState == ArmState.MID_CUBE) {

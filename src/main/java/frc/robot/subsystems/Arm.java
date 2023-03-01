@@ -23,7 +23,8 @@ public class Arm extends SubsystemBase {
         MID_CONE,
         MID_CUBE,
         FLOOR,
-        HOME;
+        HOME,
+        STOW;
     }
 
     private ArmState m_currentArmState;

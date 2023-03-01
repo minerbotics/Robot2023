@@ -59,8 +59,8 @@ public final class Constants {
         public static final int REVERSE_CHANNEL = 3;
     }
     public final static class LifterConstants {
-        public static final int FORWARD_CHANNEL = 5;
-        public static final int REVERSE_CHANNEL = 4;
+        public static final int FORWARD_CHANNEL = 4;
+        public static final int REVERSE_CHANNEL = 5;
     }
     public final static class ArmConstants {
         public static final int RIGHT_ARM_MOTOR = 13;
@@ -77,7 +77,8 @@ public final class Constants {
         public static final double TOP_CUBE_GOAL_SETPOINT = 0;
         public static final double MIDDLE_CONE_GOAL_SETPOINT = 0;
         public static final double MIDDLE_CUBE_GOAL_SETPOINT = 0;
-        public static final double HOME_SETPOINT = 0;
         public static final double FLOOR_SETPOINT = 0;
+        public static final double HOME_SETPOINT = 0;
+        public static final double STOW_SETPOINT = 0;
     }
 }

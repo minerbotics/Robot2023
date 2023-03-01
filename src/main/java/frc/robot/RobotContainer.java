@@ -7,12 +7,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
+import frc.robot.commands.AutoBackup;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CycleArmDown;
 import frc.robot.commands.CycleArmUp;
@@ -62,7 +64,9 @@ public class RobotContainer {
   private Trigger rbButtonSecondary;
 
   private ManualArmMove m_raiseArm;
+  private AutoBackup m_autoBackup;
 
+  private static SendableChooser<Command> m_chooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -94,6 +98,7 @@ public class RobotContainer {
 
     //Commands
     m_raiseArm = new ManualArmMove(m_arm, m_secondaryController);
+//    m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
 
     m_arm.setDefaultCommand(m_raiseArm);
 
@@ -107,6 +112,9 @@ public class RobotContainer {
             () -> -modifyAxis(m_primaryController.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
+
+    m_chooser = new SendableChooser<Command>();
+    m_chooser.setDefaultOption("Back up", m_autoBackup);
     
     // Configure the button bindings
     configureButtonBindings();
@@ -130,7 +138,7 @@ public class RobotContainer {
     yButtonSecondary.onTrue(new MaxLift(m_lifter));
     aButtonSecondary.onTrue(new MinLift(m_lifter));
     backButtonSecondary.onTrue(new CycleArmDown(m_arm, m_lifter));
-//    startButtonSecondary.onTrue(new CycleArmUp(m_arm, m_lifter, m_lifterHelper));
+//    startButtonSecondary.onTrue(new CycleArmUp(m_arm, m_lifter));
     lbButtonSecondary.onTrue(new ToggleSlide(m_slider));
     rbButtonSecondary.onTrue(new ToggleGrabber(m_grabber));
   }

@@ -28,6 +28,7 @@ public class Balance extends CommandBase {
         pitchAngleDegrees = m_drivetrain.getPitchAngleDegrees();
         rollAngleDegrees = m_drivetrain.getRollAngleDegrees();
 
+        //turns balance mode on if needed
         if ( !autoBalanceXMode && 
              (Math.abs(rollAngleDegrees) >= 
               Math.abs(kOffBalanceAngleThresholdDegrees))) {
@@ -49,12 +50,14 @@ public class Balance extends CommandBase {
             autoBalanceYMode = false;
         }
         
+    
         System.out.println("BalanceX: " + autoBalanceXMode + ", Roll: " + rollAngleDegrees);
         System.out.println("BalanceY: " + autoBalanceYMode + ", Pitch: " + pitchAngleDegrees);
         // Control drive system automatically, 
         // driving in reverse direction of pitch/roll angle,
         // with a magnitude based upon the angle
         
+        //sets axis rates
         if ( autoBalanceYMode ) {
             double pitchAngleRadians = pitchAngleDegrees * (Math.PI / 180.0);
             yAxisRate = Math.sin(pitchAngleRadians) * -1;
@@ -67,6 +70,7 @@ public class Balance extends CommandBase {
             System.out.println("yaxisrate: " + xAxisRate);
         }
 
+        //drives robot where needed
         m_drivetrain.drive(new ChassisSpeeds(xAxisRate * 1.6, yAxisRate * 1.6, 0.0));
     }
 
@@ -77,6 +81,6 @@ public class Balance extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        m_drivetrain.drive(new ChassisSpeeds(0, 0, 0));
     }
 }

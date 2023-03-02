@@ -5,6 +5,9 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+
+import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -14,6 +17,7 @@ public class Arm extends SubsystemBase {
     private final CANSparkMax m_leftArmMotor;
     private final SparkMaxPIDController m_pidController;
     private final RelativeEncoder m_encoder;
+    private ArmFeedforward m_armFeedForward;
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
@@ -43,12 +47,14 @@ public class Arm extends SubsystemBase {
 
         m_encoder = m_rightArmMotor.getEncoder();
 
+        //m_armFeedForward = new ArmFeedforward(-0.045328, 1.2387, 1.4995, 0.30038);
+
         // set PID coefficients
         m_pidController.setP(ArmConstants.PID_P);
         m_pidController.setI(ArmConstants.PID_I);
         m_pidController.setD(ArmConstants.PID_D);
         m_pidController.setIZone(ArmConstants.PID_Iz);
-        m_pidController.setFF(ArmConstants.PID_FF);
+ //       m_pidController.setFF(m_armFeedForward.calculate(kFF, kD));
         m_pidController.setOutputRange(
             ArmConstants.PID_MIN_OUTPUT_RANGE, 
             ArmConstants.PID_MAX_OUTPUT_RANGE);
@@ -80,5 +86,6 @@ public class Arm extends SubsystemBase {
 
     public void setArmState(ArmState armState) {
         m_currentArmState = armState;
+        SmartDashboard.putString("Arm State", m_currentArmState.name());
     }
 }

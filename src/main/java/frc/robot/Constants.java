@@ -65,20 +65,20 @@ public final class Constants {
     public final static class ArmConstants {
         public static final int RIGHT_ARM_MOTOR = 13;
         public static final int LEFT_ARM_MOTOR = 14;
-        public static final double PID_P = 0.1;
+        public static final double PID_P = 0.73909;
         public static final double PID_I = 1e-4;
-        public static final double PID_D = 1;
+        public static final double PID_D = 0.24397;
         public static final double PID_Iz = 0;
         public static final double PID_FF = 0;
         public static final double PID_MAX_OUTPUT_RANGE = 1;
         public static final double PID_MIN_OUTPUT_RANGE = -1;
         // Positions
-        public static final double TOP_CONE_GOAL_SETPOINT = 0;
-        public static final double TOP_CUBE_GOAL_SETPOINT = 0;
-        public static final double MIDDLE_CONE_GOAL_SETPOINT = 0;
-        public static final double MIDDLE_CUBE_GOAL_SETPOINT = 0;
-        public static final double FLOOR_SETPOINT = 0;
-        public static final double HOME_SETPOINT = 0;
-        public static final double STOW_SETPOINT = 0;
+        public static final double TOP_CONE_GOAL_SETPOINT = 0.5;
+        public static final double TOP_CUBE_GOAL_SETPOINT = 0.4;
+        public static final double MIDDLE_CONE_GOAL_SETPOINT = 0.3;
+        public static final double MIDDLE_CUBE_GOAL_SETPOINT = 0.2;
+        public static final double FLOOR_SETPOINT = 0.1;
+        public static final double HOME_SETPOINT = -0.1;
+        public static final double STOW_SETPOINT = -0.15;
     }
 }

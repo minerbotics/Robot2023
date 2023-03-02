@@ -33,6 +33,7 @@ import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Slider;
+import frc.robot.subsystems.Arm.ArmState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -81,6 +82,7 @@ public class RobotContainer {
     m_grabber = new Grabber();
     m_slider = new Slider();
     m_arm = new Arm();
+    m_arm.setArmState(ArmState.STOW);
 
     // Controllers
     m_primaryController = new CommandXboxController(0);
@@ -131,10 +133,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Primary Driver
-    yButtonPrimary.onTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight).withTimeout(5));
-    yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
-    bButtonPrimary.whileTrue(new Balance(m_drivetrainSubsystem).withTimeout(10));
-    bButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
+    yButtonPrimary.whileTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight).withTimeout(0.1));
+//    yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
+    bButtonPrimary.whileTrue(new Balance(m_drivetrainSubsystem).withTimeout(0.1));
+//    bButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
     backButtonPrimary.onTrue(new RunCommand(m_drivetrainSubsystem::zeroGyroscope));
 
     // Secondary Driver

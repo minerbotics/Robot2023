@@ -24,7 +24,7 @@ public class CycleArmDown extends CommandBase {
     @Override
     public void execute() {
         ArmState currentArmState = m_arm.getCurrentArmState();
-        if (currentArmState == ArmState.STOW) {
+        if (currentArmState != null && currentArmState == ArmState.STOW) {
             return;
         } else if (currentArmState == ArmState.HOME) {
             if (!m_lifter.isRaised()) {

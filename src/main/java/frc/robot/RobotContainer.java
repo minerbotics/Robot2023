@@ -131,9 +131,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Primary Driver
-    yButtonPrimary.whileTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight));
+    yButtonPrimary.onTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight).withTimeout(5));
     yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
-    bButtonPrimary.whileTrue(new Balance(m_drivetrainSubsystem));
+    bButtonPrimary.whileTrue(new Balance(m_drivetrainSubsystem).withTimeout(10));
     bButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
     backButtonPrimary.onTrue(new RunCommand(m_drivetrainSubsystem::zeroGyroscope));
 

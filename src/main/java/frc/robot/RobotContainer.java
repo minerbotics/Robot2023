@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
 import frc.robot.commands.AutoBackup;
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CycleArmDown;
 import frc.robot.commands.CycleArmUp;
@@ -116,6 +118,7 @@ public class RobotContainer {
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("Back up", m_autoBackup);
     
+    SmartDashboard.putData("Auto Choices", m_chooser);
     // Configure the button bindings
     configureButtonBindings();
   }

@@ -17,9 +17,9 @@ public class SmackThat extends SequentialCommandGroup {
         m_lifter = lifter;
         m_arm = arm;
         addCommands(
-            new MaxLift(m_lifter).withTimeout(0.1),
+            new MaxLift(m_lifter),
             new AutoArm(m_arm).withTimeout(0.2),
-            new AutoDrive(m_drivetrain, new ChassisSpeeds(-0.7, 0, 0)).withTimeout(7.5),
+            new AutoDrive(m_drivetrain, new ChassisSpeeds(-0.75, 0, 0)).withTimeout(7.5),
             new AutoDrive(m_drivetrain, new ChassisSpeeds(0, 0, 0))
         );
 

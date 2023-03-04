@@ -6,7 +6,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 
-import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
@@ -17,7 +16,6 @@ public class Arm extends SubsystemBase {
     private final CANSparkMax m_leftArmMotor;
     private final SparkMaxPIDController m_pidController;
     private final RelativeEncoder m_encoder;
-    private ArmFeedforward m_armFeedForward;
 
     public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 

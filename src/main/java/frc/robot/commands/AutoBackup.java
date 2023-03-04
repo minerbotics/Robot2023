@@ -11,7 +11,7 @@ public class AutoBackup extends SequentialCommandGroup {
     public AutoBackup(DrivetrainSubsystem drivetrain) {
         m_drivetrain = drivetrain;
         addCommands(
-            new AutoDrive(m_drivetrain, new ChassisSpeeds(0, -0.5, 0)).withTimeout(1),
+            new AutoDrive(m_drivetrain, new ChassisSpeeds(0.7, 0, 0)).withTimeout(7.5),
             new AutoDrive(m_drivetrain, new ChassisSpeeds(0, 0, 0))
         );
 

@@ -10,23 +10,20 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
 import frc.robot.commands.AutoBackup;
-import frc.robot.commands.AutoDrive;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CycleArmDown;
-import frc.robot.commands.CycleArmUp;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ManualArmMove;
 import frc.robot.commands.ToggleGrabber;
 import frc.robot.commands.MinLift;
+import frc.robot.commands.SmackThat;
 import frc.robot.commands.MaxLift;
 import frc.robot.commands.ToggleSlide;
-import frc.robot.commands.StopCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
@@ -68,6 +65,7 @@ public class RobotContainer {
 
   private ManualArmMove m_raiseArm;
   private AutoBackup m_autoBackup;
+  private SmackThat m_smackThat;
 
   private static SendableChooser<Command> m_chooser;
 
@@ -102,7 +100,8 @@ public class RobotContainer {
 
     //Commands
     m_raiseArm = new ManualArmMove(m_arm, m_secondaryController);
-//    m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
+    m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
+    m_smackThat = new SmackThat(m_drivetrainSubsystem, m_lifter, m_arm);
 
     m_arm.setDefaultCommand(m_raiseArm);
 
@@ -119,6 +118,7 @@ public class RobotContainer {
 
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("Back up", m_autoBackup);
+    m_chooser.addOption("Smack That", m_smackThat);
     
     SmartDashboard.putData("Auto Choices", m_chooser);
     // Configure the button bindings
@@ -154,8 +154,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return m_chooser.getSelected();
   }
 
   private static double deadband(double value, double deadband) {

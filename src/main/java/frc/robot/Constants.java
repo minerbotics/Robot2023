@@ -41,12 +41,12 @@ public final class Constants {
     public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7; 
     public static final int BACK_LEFT_MODULE_STEER_MOTOR = 8; 
     public static final int BACK_LEFT_MODULE_STEER_ENCODER = 10;
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(257.255851239242);
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(174.9902388376704);
 
     public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 3;
     public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 4;
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 12;
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(11.513672082005296);
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(9.49218709713352);
 
     public static final int PCM_ID = 0;
 

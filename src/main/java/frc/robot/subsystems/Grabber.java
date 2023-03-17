@@ -9,22 +9,21 @@ import frc.robot.Constants.GrabberConstants;
 
 public class Grabber extends SubsystemBase {
 
-    private final DoubleSolenoid m_grabberSolenoid;
+    private final DoubleSolenoid m_GrabberSolenoid;
 
     public Grabber() {
-        m_grabberSolenoid = new DoubleSolenoid(
-            PneumaticsModuleType.CTREPCM, 
-            GrabberConstants.FORWARD_CHANNEL, 
-            GrabberConstants.REVERSE_CHANNEL
-        );
+        m_GrabberSolenoid = new DoubleSolenoid(
+            PneumaticsModuleType.CTREPCM,
+            GrabberConstants.FORWARD_CHANNEL,
+            GrabberConstants.REVERSE_CHANNEL);
     }
 
     public void grab() {
-        m_grabberSolenoid.set(Value.kReverse);
+        m_GrabberSolenoid.set(Value.kReverse);
     }
 
     public void release() {
-        m_grabberSolenoid.set(Value.kForward);
+        m_GrabberSolenoid.set(Value.kForward);
     }
 
     public void toggleGrabber() {
@@ -40,6 +39,7 @@ public class Grabber extends SubsystemBase {
     }
 
     public boolean isGrabbing() {
-        return m_grabberSolenoid.get() == Value.kReverse;
+        return m_GrabberSolenoid.get() == Value.kReverse;
     }
+    
 }

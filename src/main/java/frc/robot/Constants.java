@@ -50,35 +50,42 @@ public final class Constants {
 
     public static final int PCM_ID = 0;
 
-    public final static class GrabberConstants {
-        public static final int FORWARD_CHANNEL = 2;
-        public static final int REVERSE_CHANNEL = 1;
+    public static final class ArmConstants {
+        public static final int PIVOT_MOTOR_RIGHT = 13;
+        public static final int PIVOT_MOTOR_LEFT = 14;
+        public static final int TELESCOPE_MOTOR = 15;
+        public static final double maxMotorVoltage = 12;
+
+        public static double kP;
+        public static double kI;
+        public static double kD;
+        
+        public static double kS;
+        public static double kV;
+        public static double kA;
+        public static double kG;
+
+        public enum Position {
+            STOWED(0.0),
+            FLOOR(1.0),
+            MID(2.0),
+            TOP(3.0),
+            LOAD(3.5);
+
+            private double pivotPos;
+
+            private Position(double pivot) {
+                this.pivotPos = pivot;
+            }
+
+            public double getPivot() {
+                return pivotPos;
+            }
+        }
     }
-    public final static class SliderConstants {
-        public static final int FORWARD_CHANNEL = 0;
-        public static final int REVERSE_CHANNEL = 3;
-    }
-    public final static class LifterConstants {
-        public static final int FORWARD_CHANNEL = 4;
-        public static final int REVERSE_CHANNEL = 5;
-    }
-    public final static class ArmConstants {
-        public static final int RIGHT_ARM_MOTOR = 13;
-        public static final int LEFT_ARM_MOTOR = 14;
-        public static final double PID_P = 0.73909;
-        public static final double PID_I = 1e-4;
-        public static final double PID_D = 0.24397;
-        public static final double PID_Iz = 0;
-        public static final double PID_FF = 0;
-        public static final double PID_MAX_OUTPUT_RANGE = 1;
-        public static final double PID_MIN_OUTPUT_RANGE = -1;
-        // Positions
-        public static final double TOP_CONE_GOAL_SETPOINT = 0.5;
-        public static final double TOP_CUBE_GOAL_SETPOINT = 0.4;
-        public static final double MIDDLE_CONE_GOAL_SETPOINT = 0.3;
-        public static final double MIDDLE_CUBE_GOAL_SETPOINT = 0.2;
-        public static final double FLOOR_SETPOINT = 0.1;
-        public static final double HOME_SETPOINT = -0.1;
-        public static final double STOW_SETPOINT = -0.15;
+
+    public static final class GrabberConstants {
+        public static final int FORWARD_CHANNEL = 6;
+        public static final int REVERSE_CHANNEL = 7;
     }
 }

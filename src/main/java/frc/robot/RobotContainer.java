@@ -16,21 +16,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignCenter;
 import frc.robot.commands.AutoBackup;
 import frc.robot.commands.Balance;
-import frc.robot.commands.CycleArmDown;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.ManualArmMove;
+import frc.robot.commands.MoveTelescope;
+import frc.robot.commands.PivotArm;
 import frc.robot.commands.ToggleGrabber;
-import frc.robot.commands.MinLift;
-import frc.robot.commands.SmackThat;
-import frc.robot.commands.MaxLift;
-import frc.robot.commands.ToggleSlide;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmPivot;
+import frc.robot.subsystems.ArmTelescope;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Slider;
-import frc.robot.subsystems.Arm.ArmState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,31 +36,19 @@ public class RobotContainer {
   // Subsystems
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final Limelight m_Limelight;
-  private final Lifter m_lifter;
-  private final Grabber m_grabber;
-  private final Slider m_slider;
-  private final Arm m_arm;
+  private final Grabber m_Grabber;
+  private final ArmPivot m_ArmPivot;
+  private final ArmTelescope m_Telescope;
 
   // Controllers
-  private final CommandXboxController m_primaryController;
-  private final CommandXboxController m_secondaryController;
+  private final CommandXboxController m_DriverController;
+  private final CommandXboxController m_OperatorController;
 
-  // Buttons
-  private Trigger yButtonPrimary;
-  private Trigger backButtonPrimary;
-  private Trigger startButtonPrimary;
-  private Trigger bButtonPrimary;
-  private Trigger xButtonSecondary;
-  private Trigger yButtonSecondary;
-  private Trigger aButtonSecondary;
-  private Trigger backButtonSecondary;
-  private Trigger startButtonSecondary;
-  private Trigger lbButtonSecondary;
-  private Trigger rbButtonSecondary;
+  // Commands
+  private PivotArm m_Pivot;
+  private MoveTelescope m_Extend;
 
-  private ManualArmMove m_raiseArm;
   private AutoBackup m_autoBackup;
-  private SmackThat m_smackThat;
 
   private static SendableChooser<Command> m_chooser;
 
@@ -77,35 +59,21 @@ public class RobotContainer {
     // Subsystems
     m_drivetrainSubsystem = new DrivetrainSubsystem();
     m_Limelight = new Limelight();
-    m_lifter = new Lifter();
-    m_grabber = new Grabber();
-    m_slider = new Slider();
-    m_arm = new Arm();
-    m_arm.setArmState(ArmState.STOW);
+    m_Grabber = new Grabber();
+    m_ArmPivot = new ArmPivot();
+    m_Telescope = new ArmTelescope();
 
     // Controllers
-    m_primaryController = new CommandXboxController(0);
-    m_secondaryController = new CommandXboxController(1);
-
-    //Buttons
-    yButtonPrimary = m_primaryController.y();
-    bButtonPrimary = m_primaryController.b();
-    backButtonPrimary = m_primaryController.back();
-    startButtonPrimary = m_primaryController.start();
-    xButtonSecondary = m_secondaryController.x();
-    yButtonSecondary = m_secondaryController.y();
-    aButtonSecondary = m_secondaryController.a();
-    backButtonSecondary = m_secondaryController.back();
-    startButtonSecondary = m_secondaryController.start();
-    lbButtonSecondary = m_secondaryController.leftBumper();
-    rbButtonSecondary = m_secondaryController.rightBumper();
+    m_DriverController = new CommandXboxController(0);
+    m_OperatorController = new CommandXboxController(1);
 
     //Commands
-    m_raiseArm = new ManualArmMove(m_arm, m_secondaryController);
-    m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
-    m_smackThat = new SmackThat(m_drivetrainSubsystem, m_lifter, m_arm);
+    m_Pivot = new PivotArm(m_ArmPivot, m_OperatorController);
+    m_ArmPivot.setDefaultCommand(m_Pivot);
 
-    m_arm.setDefaultCommand(m_raiseArm);
+    m_Extend = new MoveTelescope(m_Telescope, m_OperatorController);
+    m_Telescope.setDefaultCommand(m_Extend);
+    m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -113,14 +81,13 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_primaryController.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_primaryController.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_primaryController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> -modifyAxis(m_DriverController.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_DriverController.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -modifyAxis(m_DriverController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("Back up", m_autoBackup);
-    m_chooser.addOption("Smack That", m_smackThat);
     
     SmartDashboard.putData("Auto Choices", m_chooser);
     // Configure the button bindings
@@ -135,19 +102,12 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Primary Driver
-    yButtonPrimary.whileTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight).withTimeout(0.1));
-//    yButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
-    bButtonPrimary.whileTrue(new Balance(m_drivetrainSubsystem).withTimeout(0.1));
-//    bButtonPrimary.onFalse(new StopCommand(m_drivetrainSubsystem));
-    startButtonPrimary.onTrue(new InstantCommand(() -> m_drivetrainSubsystem.zeroGyroscope()));
+    m_DriverController.y().whileTrue(new AlignCenter(m_drivetrainSubsystem, m_Limelight).withTimeout(0.1));
+    m_DriverController.b().whileTrue(new Balance(m_drivetrainSubsystem).withTimeout(0.1));
+    m_DriverController.start().onTrue(new InstantCommand(() -> m_drivetrainSubsystem.zeroGyroscope()));
 
     // Secondary Driver
-    yButtonSecondary.onTrue(new MaxLift(m_lifter));
-    aButtonSecondary.onTrue(new MinLift(m_lifter));
-    backButtonSecondary.onTrue(new CycleArmDown(m_arm, m_lifter));
-//    startButtonSecondary.onTrue(new CycleArmUp(m_arm, m_lifter));
-    lbButtonSecondary.onTrue(new ToggleSlide(m_slider));
-    rbButtonSecondary.onTrue(new ToggleGrabber(m_grabber));
+    m_OperatorController.rightBumper().onTrue(new ToggleGrabber(m_Grabber));
   }
 
   /**

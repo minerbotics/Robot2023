@@ -1,16 +1,19 @@
 package frc.robot.subsystems;
 
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmTelescope extends SubsystemBase {
 
-    private final WPI_VictorSPX m_TelescopeMotor;
+    private final CANSparkMax m_TelescopeMotor;
 
     public ArmTelescope() {
-        m_TelescopeMotor = new WPI_VictorSPX(ArmConstants.TELESCOPE_MOTOR);
+        m_TelescopeMotor = new CANSparkMax(
+          ArmConstants.TELESCOPE_MOTOR, 
+          CANSparkMaxLowLevel.MotorType.kBrushless);
     }
 
     @Override

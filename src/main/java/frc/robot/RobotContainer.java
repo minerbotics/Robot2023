@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,6 +19,7 @@ import frc.robot.commands.Balance;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.MoveTelescope;
 import frc.robot.commands.PivotArm;
+import frc.robot.commands.SmackThat;
 import frc.robot.commands.ToggleGrabber;
 import frc.robot.subsystems.ArmPivot;
 import frc.robot.subsystems.ArmTelescope;
@@ -46,10 +48,13 @@ public class RobotContainer {
   // Commands
   private PivotArm m_Pivot;
   private MoveTelescope m_Extend;
-
   private AutoBackup m_autoBackup;
+  private SmackThat m_smackThat;
 
   private static SendableChooser<Command> m_chooser;
+  private final SlewRateLimiter m_slewX;
+  private final SlewRateLimiter m_slewY;
+  private final SlewRateLimiter m_slewRot;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -73,6 +78,11 @@ public class RobotContainer {
     m_Extend = new MoveTelescope(m_Telescope, m_OperatorController);
     m_Telescope.setDefaultCommand(m_Extend);
     m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
+    m_smackThat = new SmackThat(m_drivetrainSubsystem, m_ArmPivot);
+
+    m_slewX = new SlewRateLimiter(Constants.TRANSLATION_SLEW);
+    m_slewY = new SlewRateLimiter(Constants.TRANSLATION_SLEW);
+    m_slewRot = new SlewRateLimiter(Constants.ROTATION_SLEW);
 
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -80,13 +90,14 @@ public class RobotContainer {
     // Right stick X axis -> rotation
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(m_DriverController.getLeftY()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_DriverController.getLeftX()) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-            () -> -modifyAxis(m_DriverController.getRightX()) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
+            () -> m_slewX.calculate(-modifyAxis(m_DriverController.getLeftY())) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> m_slewY.calculate(-modifyAxis(m_DriverController.getLeftX())) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> m_slewRot.calculate(-modifyAxis(m_DriverController.getRightX())) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND
     ));
 
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("Back up", m_autoBackup);
+    m_chooser.addOption("Smack That", m_smackThat);
     
     SmartDashboard.putData("Auto Choices", m_chooser);
     // Configure the button bindings

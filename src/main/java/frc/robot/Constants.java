@@ -48,6 +48,9 @@ public final class Constants {
     public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 12;
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(8.87);
 
+    public static final double TRANSLATION_SLEW = 1.55;
+    public static final double ROTATION_SLEW = 3.00;
+
     public static final int PCM_ID = 0;
 
     public static final class ArmConstants {

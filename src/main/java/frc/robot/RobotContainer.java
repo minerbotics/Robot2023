@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AlignCenter;
+import frc.robot.commands.AutoAlign;
 import frc.robot.commands.AutoBackup;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DefaultDriveCommand;
@@ -46,12 +47,14 @@ public class RobotContainer {
   private final CommandXboxController m_DriverController;
   private final CommandXboxController m_OperatorController;
 
+
   // Commands
   private PivotArm m_Pivot;
   private MoveTelescope m_Extend;
   private AutoBackup m_autoBackup;
   private SmackThat m_smackThat;
   private DropItLikeItsHot m_drop;
+  private AutoAlign m_AutoAlign;
 
   private static SendableChooser<Command> m_chooser;
   private final SlewRateLimiter m_slewX;
@@ -82,6 +85,7 @@ public class RobotContainer {
     m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
     m_smackThat = new SmackThat(m_drivetrainSubsystem, m_ArmPivot);
     m_drop = new DropItLikeItsHot(m_drivetrainSubsystem, m_Telescope, m_ArmPivot, m_Grabber);
+    m_AutoAlign = new AutoAlign(m_drivetrainSubsystem, m_Limelight);
 
     m_slewX = new SlewRateLimiter(Constants.TRANSLATION_SLEW);
     m_slewY = new SlewRateLimiter(Constants.TRANSLATION_SLEW);

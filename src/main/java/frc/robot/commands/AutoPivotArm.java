@@ -19,7 +19,7 @@ public class AutoPivotArm extends CommandBase {
 
     @Override
     public void execute() {
-        m_arm.setMotor(0.5);
+        m_arm.setMotor(1);
     }
 
     @Override

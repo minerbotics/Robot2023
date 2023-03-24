@@ -1,7 +1,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.ArmPivot;
 import frc.robot.subsystems.ArmTelescope;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -20,10 +22,12 @@ public class DropItLikeItsHot extends SequentialCommandGroup {
         m_arm = arm;
         m_grabber = grabber;
         addCommands(
-            new AutoMoveTelescope(m_telescope, 0.5).withTimeout(0.5),
+            new InstantCommand(() -> m_drivetrain.zeroGyroscope()),
+            new AutoMoveTelescope(m_telescope, 0.75).withTimeout(0.5),
             new AutoPivotArm(m_arm).withTimeout(2),
             new AutoReleaseGrabber(m_grabber),
-            new AutoDrive(m_drivetrain, new ChassisSpeeds(0.7, 0, 0)).withTimeout(7.5),
+            new WaitCommand(2),
+            new AutoDrive(m_drivetrain, new ChassisSpeeds(-1, 0, 0)).withTimeout(7.5),
             new AutoDrive(m_drivetrain, new ChassisSpeeds(0, 0, 0))
         );
 

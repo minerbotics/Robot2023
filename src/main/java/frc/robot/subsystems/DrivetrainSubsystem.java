@@ -161,6 +161,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
 
+  public float getYaw() {
+        return m_navx.getYaw();
+  }
+
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
   }

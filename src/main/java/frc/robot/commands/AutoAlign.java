@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Limelight;
 
@@ -10,12 +9,10 @@ public class AutoAlign extends CommandBase {
 
     private final DrivetrainSubsystem m_driveTrain;
     private final Limelight m_Limelight;
-    private final CommandXboxController m_Controller;
 
-    public AutoAlign(DrivetrainSubsystem driveTrain, Limelight limelight, CommandXboxController controller) {
+    public AutoAlign(DrivetrainSubsystem driveTrain, Limelight limelight) {
         m_driveTrain = driveTrain;
         m_Limelight = limelight;
-        m_Controller = controller;
         addRequirements(m_driveTrain, m_Limelight);
     }
 

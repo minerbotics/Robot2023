@@ -22,6 +22,6 @@ public class MoveTelescope extends CommandBase {
 
     @Override
     public void execute() {
-        m_Telescope.in(m_Controller.getRightY());
+        m_Telescope.move(m_Controller.getRightY());
     }
 }

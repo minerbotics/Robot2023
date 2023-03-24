@@ -17,6 +17,7 @@ import frc.robot.commands.AlignCenter;
 import frc.robot.commands.AutoBackup;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DropItLikeItsHot;
 import frc.robot.commands.MoveTelescope;
 import frc.robot.commands.PivotArm;
 import frc.robot.commands.SmackThat;
@@ -50,6 +51,7 @@ public class RobotContainer {
   private MoveTelescope m_Extend;
   private AutoBackup m_autoBackup;
   private SmackThat m_smackThat;
+  private DropItLikeItsHot m_drop;
 
   private static SendableChooser<Command> m_chooser;
   private final SlewRateLimiter m_slewX;
@@ -79,6 +81,7 @@ public class RobotContainer {
     m_Telescope.setDefaultCommand(m_Extend);
     m_autoBackup = new AutoBackup(m_drivetrainSubsystem);
     m_smackThat = new SmackThat(m_drivetrainSubsystem, m_ArmPivot);
+    m_drop = new DropItLikeItsHot(m_drivetrainSubsystem, m_Telescope, m_ArmPivot, m_Grabber);
 
     m_slewX = new SlewRateLimiter(Constants.TRANSLATION_SLEW);
     m_slewY = new SlewRateLimiter(Constants.TRANSLATION_SLEW);
@@ -98,6 +101,7 @@ public class RobotContainer {
     m_chooser = new SendableChooser<Command>();
     m_chooser.setDefaultOption("Back up", m_autoBackup);
     m_chooser.addOption("Smack That", m_smackThat);
+    m_chooser.addOption("Drop It Like Its Hot", m_drop);
     
     SmartDashboard.putData("Auto Choices", m_chooser);
     // Configure the button bindings
